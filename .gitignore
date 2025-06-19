@@ -1,3 +1,8 @@
+# Ignore files with no extension (compiled C++ files)
+*
+!*/
+!*.*
+
 # Prerequisites
 *.d
 
