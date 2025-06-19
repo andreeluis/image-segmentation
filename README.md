@@ -1,81 +1,57 @@
-# Segmentação de Imagens Baseada em Grafos - Trabalho 02
+<h1 align="center">
+	Graph-Based Image Segmentation
+</h1>
 
-Este trabalho aborda o problema de segmentação de imagens utilizando abordagens baseadas em grafos. Foram implementados dois métodos: um baseado na Árvore Geradora Mínima (MST), conforme o algoritmo proposto por Felzenszwalb e Huttenlocher (2004), e outro baseado em Caminho Mínimo, inspirado na Transformada Floresta de Imagens (IFT) proposta por Falcão et al. (2004). Ambos os métodos foram aplicados a imagens em tons de cinza e coloridas. Uma análise comparativa destaca as semelhanças e diferenças na segmentação de imagens por meio do particionamento de grafo.
+<p align="center">
+	<img alt="C++ Badge" src="https://img.shields.io/badge/C++-%2300599c?style=for-the-badge&logo=cplusplus&logoColor=white">
+  <img alt="Computer Vision Badge" src="https://img.shields.io/badge/Computer%20Vision-%230d1117?style=for-the-badge">
+</p>
 
-## Estrutura do projeto:
+This project provides image segmentation using **graph-based algorithms**. Two state-of-the-art methods are implemented: one based on **Minimum Spanning Tree (MST)**, following the approach of Felzenszwalb and Huttenlocher (2004), and another based on **Shortest Path**, inspired by the Image Foresting Transform (IFT) proposed by Falcão et al. (2004). Both methods support grayscale and color images.
+
+## Quick Start
+
+> [!WARNING]
+> This project requires **CMake** and **OpenCV** to be installed on your system.
+
+For a quick start, you can clone the repository and run the provided CMake build system.
+
+```bash
+git clone https://github.com/andreeluis/image-segmentation
+cd image-segmentation
+make all
+```
+> [!TIP]
+> If you prefer not to use CMake, you can compile the code directly with `g++` as shown below.
+> ```bash
+> g++ -std=c++17 src/*.cpp -Iinclude `pkg-config --cflags --libs opencv4` -o main
+> ```
+
+### Usage
+
+```bash
+# For IFT segmentation with 250 seeds
+./main ift images/painted_cat.jpg 250
+
+# For MST segmentation with k=8000
+./main mst images/bw_cat.png 8000
+```
+## Project Structure
 
 ```
 /image-segmentation
- ├── include/
- │    ├── ift.hpp
- │    └── mst.hpp
+ ├── Makefile
  ├── src/
- │    ├── ift.cpp
- │    ├── mst.cpp
- │    └── main.cpp
+ │   ├── include/
+ │   │   ├── ift.hpp
+ │   │   ├── mst.hpp
+ │   │   └── utils.hpp
+ │   ├── ift.cpp
+ │   ├── mst.cpp
+ │   ├── utils.cpp
+ │   └── main.cpp
  ├── images/
- │    └── cat.jpg
- ├── results/ (vai ser gerado)
- ├── CMakeLists.txt
-```
-
-## Como compilar (passo a passo):
-
-### 1. Crie uma pasta para a build:
-
-```bash
-mkdir build
-cd build
-```
-
-### 2. Gere os arquivos de build:
-
-```bash
-cmake ..
-```
-
-> Isso encontra o OpenCV instalado no seu sistema e configura o projeto.
-
-### 3. Compile o projeto:
-
-```bash
-cmake --build .
-```
-
-Vai gerar o executável chamado `segmenter` na pasta `build`.
-
-## Como rodar:
-
-```bash
-./segmenter ift ../images/cat.jpg 100
-```
-
-ou
-
-```bash
-./segmenter mst ../images/cat.jpg 5000
-```
-
-> As imagens segmentadas serão salvas em `../results/ift_segmented.jpg` e `../results/mst_segmented.jpg`.
-
----
-
-## Alternativa mais simples (sem CMake) usando g++ direto (Linux/macOS/WLS):
-
-```bash
-g++ -std=c++17 src/*.cpp -Iinclude `pkg-config --cflags --libs opencv4` -o segmenter
-```
-
-> Não garanto que funcione!
-
-### Antigo:
-
-```bash
-g++ mst.cpp -I/usr/include/opencv4 -L/usr/lib -lopencv_core -lopencv_imgcodecs -lopencv_highgui -o main && ./main
-```
-
-E executar normalmente:
-
-```bash
-./segmenter ift images/cat.jpg 100
+ │    ├── bw_cat.png
+ │    └── painted_cat.png
+ ├── results/
 ```
