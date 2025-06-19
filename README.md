@@ -31,7 +31,7 @@ make all
 
 ```bash
 # For IFT segmentation with 250 seeds
-./main ift images/painted_cat.jpg 250
+./main ift images/painted_cat.png 250
 
 # For MST segmentation with k=8000
 ./main mst images/bw_cat.png 8000
