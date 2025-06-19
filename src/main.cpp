@@ -1,61 +1,66 @@
 #include "include/ift.hpp"
 #include "include/mst.hpp"
-
 #include <iostream>
 
-int main(int argc, char* argv[])
+using namespace std;
+using namespace cv;
+
+int main(int argc, char *argv[])
 {
 	int ret = 0;
-    if (argc < 4)
-    {
-        std::cerr << "Usage: " << argv[0] << " <method> <image_path> <value>\n";
-        std::cerr << "Methods:\n";
-        std::cerr << "  ift : Image Foresting Transform\n";
-        std::cerr << "  mst : Minimum Spanning Tree\n";
-        std::cerr << "Value:\n";
-        std::cerr << "  For IFT : number of seeds (integer)\n";
-        std::cerr << "  For MST : k value (float)\n";
+	if (argc < 4)
+	{
+		cerr << "Usage: " << argv[0] << " <method> <image_path> <value>\n";
+		cerr << "Methods:\n";
+		cerr << "  ift : Image Foresting Transform\n";
+		cerr << "  mst : Minimum Spanning Tree\n";
+		cerr << "Value:\n";
+		cerr << "  For IFT : number of seeds (integer)\n";
+		cerr << "  For MST : k value (float)\n";
 		ret = -1;
-    }
+	}
 	else
 	{
-		std::string method = argv[1];
-		std::string image_path = argv[2];
+		string method = argv[1];
+		transform(method.begin(), method.end(), method.begin(), ::tolower);
+		if (method != "ift" && method != "mst")
+		{
+			cerr << "Invalid method: " << method << "\n";
+			cerr << "Valid methods are: ift, mst\n";
+			return -1;
+		}
+		
+		string image_path = argv[2];		
+		string output_path = "results/" + method + "/" + image_path.substr(image_path.find_last_of("/\\") + 1, image_path.find_last_of('.') - image_path.find_last_of("/\\") - 1) + "_" + argv[3] + ".png";
 
 		try
 		{
 			if (method == "ift")
 			{
-				int num_seeds = std::stoi(argv[3]);
+				int num_seeds = stoi(argv[3]);
 				IFT ift(image_path, num_seeds);
 				ift.run();
-				std::string output_path = "results/ift_segmented.jpg";
-				ift.saveResult(output_path);
-				cv::imshow("IFT Segmented Image", ift.getResult());
-				cv::waitKey(0);
+				ift.save_result(output_path);
 			}
 			else if (method == "mst")
 			{
-				float k = std::stof(argv[3]);
+				float k = stof(argv[3]);
 				MST mst(image_path, k);
 				mst.segment();
-				std::string output_path = "results/mst_segmented.jpg";
-				mst.saveResult(output_path);
-				cv::imshow("MST Segmented Image", mst.getResult());
-				cv::waitKey(0);
+				mst.save_result(output_path);
 			}
 			else
 			{
-				std::cerr << "Unknown method: " << method << "\n";
+				cerr << "Unknown method: " << method << "\n";
 				ret = -1;
 			}
 		}
-		catch (const std::exception& e)
+		catch (const exception &e)
 		{
-			std::cerr << "Error: " << e.what() << "\n";
+			cerr << "Error: " << e.what() << "\n";
 			ret = -1;
 		}
 	}
 
-    return ret;
+	return ret;
 }
