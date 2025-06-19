@@ -66,6 +66,8 @@ ou
 g++ -std=c++17 src/*.cpp -Iinclude `pkg-config --cflags --libs opencv4` -o segmenter
 ```
 
+> Não garanto que funcione!
+
 ### Antigo:
 
 ```bash
